@@ -1,4 +1,4 @@
-# adventcode
+# adventcode 2022
 
 Hi¡¡ 
 
@@ -10,7 +10,7 @@ This year I wanna try to do all the advent problems I can because is a good chal
 and also because I am learning Golang.
 
 So, you can see here my solutions to advent code problems and use it if you need it. This are not
-the better solutions or the most efficients ones but is my little contribution to this community.
+the best solutions or the most efficients ones but is my little contribution to this community.
 
 If you have any questions or commentaries you can contact me on twitter: @javi_aso
 
