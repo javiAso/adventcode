@@ -1,12 +1,11 @@
 package getInput
 
 import (
+	cookie "adventcode/cookie"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
-
-const COOKIE = "_ga=GA1.2.627316507.1671029597; _gid=GA1.2.1242918966.1671029597; session=53616c7465645f5fb614ab027226f11b9fea6d56f08c3297011530ce7fc11a2f3ac2b7a5a7d506b259633519054c5857fc5f0340d23b11f55b2cd79bf3023dd7"
 
 func GetInput(url string) (string, error) {
 	clienteHttp := &http.Client{}                     //Creamos el cliente HTTP
@@ -16,7 +15,7 @@ func GetInput(url string) (string, error) {
 		return "", err
 	}
 	// Podemos agregar encabezados
-	peticion.Header.Add("Cookie", COOKIE)
+	peticion.Header.Add("Cookie", cookie.COOKIE)
 	respuesta, err := clienteHttp.Do(peticion) // Hacemos la peticion y guardamos la respuesta
 	if err != nil {
 		log.Fatalf("Error haciendo petición: %v", err)
