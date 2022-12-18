@@ -22,6 +22,6 @@ func main() {
 	//day4.GetResult1()
 	//day4.GetResult2()
 
-	day5.GetResult1()
-	//day4.GetResult2()
+	day5.GetResult1() //To change the problem change the methos inside th code
+
 }
