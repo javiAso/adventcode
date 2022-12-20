@@ -29,6 +29,9 @@ func main() {
 	//day6.GetResult1()
 	//day6.GetResult2()
 
+	//day7.GetResult1()
+	//day7.GetResult2()
+
 	day7.GetResult1()
 	//day7.GetResult2()
 }
