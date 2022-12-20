@@ -6,7 +6,8 @@ import (
 	//day3 "adventcode/day3"
 	//day4 "adventcode/day4"
 	//day5 "adventcode/day5"
-	day6 "adventcode/day6"
+	//day6 "adventcode/day6"
+	day7 "adventcode/day7"
 )
 
 func main() {
@@ -25,6 +26,9 @@ func main() {
 
 	//day5.GetResult1() //To change the problem change the methos inside th code
 
-	day6.GetResult1()
-	day6.GetResult2()
+	//day6.GetResult1()
+	//day6.GetResult2()
+
+	day7.GetResult1()
+	//day7.GetResult2()
 }
