@@ -11,9 +11,10 @@ import (
 
 const URL = "https://adventofcode.com/2022/day/7/input"
 const SALTO = 10
+const TOTALDISK = 70000000
+const TOTALUPDATE = 30000000
 
 var rootDirectory structs.Directory
-var dirsToErase structs.Directory
 
 func GetResult1() {
 	r, err := problem1()
@@ -23,9 +24,18 @@ func GetResult1() {
 	fmt.Println("El resultado del primer problema del dia 7 es: ", r)
 }
 
+func GetResult2() {
+	r, err := problem2()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	fmt.Println("El resultado del segundo problema del dia 7 es: ", r)
+}
+
 func problem1() (int, error) {
 
 	rootDirectory.Name = "/"
+	var dirsToErase structs.Directory
 	dirsToErase.Name = "Dirs To Erase"
 	input, err := getInput.GetInput(URL)
 	if err != nil {
@@ -38,9 +48,41 @@ func problem1() (int, error) {
 	}
 
 	structs.CalculateTotalSizes(&rootDirectory)
-	//structs.PrintDirectory(rootDirectory, 0)
+	structs.PrintDirectory(rootDirectory, 0)
 	structs.GetDirsToErase(rootDirectory, &dirsToErase)
 	return getTotal(dirsToErase), nil
+}
+
+func problem2() (int, error) {
+
+	rootDirectory.Name = "/"
+	var dirsSpaceed structs.Directory
+	input, err := getInput.GetInput(URL)
+	if err != nil {
+		return -1, err
+	}
+
+	err = executeOrders(0, &rootDirectory, input)
+	if err != nil {
+		return -1, err
+	}
+
+	structs.CalculateTotalSizes(&rootDirectory)
+	structs.GetDirsFreeSpaceEnough(rootDirectory, &dirsSpaceed, TOTALDISK-TOTALUPDATE-rootDirectory.TotalSize)
+
+	return getDirToEraseSize(dirsSpaceed), nil
+}
+
+func getDirToEraseSize(d structs.Directory) int {
+	size := d.Directorys[0].TotalSize
+
+	for i := 0; i < len(d.Directorys); i++ {
+		if d.Directorys[i].TotalSize < size {
+			size = d.Directorys[i].TotalSize
+		}
+	}
+
+	return size
 }
 
 func getTotal(d structs.Directory) int {

@@ -59,3 +59,15 @@ func GetDirsToErase(d Directory, e *Directory) {
 	}
 
 }
+
+func GetDirsFreeSpaceEnough(d Directory, e *Directory, spaceNeeded int) {
+
+	for i := 0; i < len(d.Directorys); i++ {
+		GetDirsFreeSpaceEnough(d.Directorys[i], e, spaceNeeded)
+	}
+
+	if d.TotalSize+spaceNeeded > -1 {
+		e.Directorys = append(e.Directorys, d)
+	}
+
+}
