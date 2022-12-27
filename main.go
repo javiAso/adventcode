@@ -34,6 +34,6 @@ func main() {
 	//day7.GetResult1()
 	//day7.GetResult2()
 
-	day10.GetResult1()
-	//day9.GetResult2()
+	//day10.GetResult1()
+	day10.GetResult2()
 }

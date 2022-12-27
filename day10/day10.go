@@ -165,6 +165,14 @@ func GetResult1() {
 	fmt.Println("El resultado del primer problema del dia 10 es: ", r)
 }
 
+func GetResult2() {
+	fmt.Println("El resultado del segundo problema del dia 10 es: ")
+	err := problem2()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
 func problem1() (int, error) {
 	input, err := getInput.GetInput(URL)
 	if err != nil {
@@ -189,6 +197,31 @@ func problem1() (int, error) {
 	return sumBuffer(xCycleBuffer), nil
 }
 
+func problem2() error {
+	input, err := getInput.GetInput(URL)
+	if err != nil {
+		return err
+	}
+	s := ""
+
+	xCycleBuffer := make([]int, 0)
+	for i, j := 0, 0; i < len(input); i++ {
+		if input[i] == SALTO {
+			buffer, err := processCycle(s, xCycleBuffer)
+			if err != nil {
+				return err
+			}
+			xCycleBuffer = buffer
+			s = ""
+			j++
+		} else {
+			s += string(input[i])
+		}
+	}
+	printSprite(xCycleBuffer)
+	return nil
+}
+
 func processCycle(cycle string, buffer []int) ([]int, error) {
 	buffer = append(buffer, 0)
 	if cycle == "noop" {
@@ -205,15 +238,36 @@ func processCycle(cycle string, buffer []int) ([]int, error) {
 func sumBuffer(buffer []int) int {
 	xRegisterValue := 1
 	var xSum int
+
 	for j := 0; j < len(buffer); j++ {
 		if j+1 == 20 || j+1 == 60 || j+1 == 100 || j+1 == 140 || j+1 == 180 || j+1 == 220 {
-			fmt.Print("X register value after cycle : ", j+1)
-			fmt.Println(" is: ", xRegisterValue)
 			xSum += xRegisterValue * (j + 1)
 		}
+
 		xRegisterValue += buffer[j]
 	}
 	return xSum
+}
+
+func printSprite(buffer []int) {
+	sprite := ""
+	xRegisterValue := 1
+	for j, cycle := 0, 0; j < len(buffer); j++ {
+
+		if cycle < xRegisterValue-1 || cycle > xRegisterValue+1 {
+			sprite += "."
+		} else {
+			sprite += "#"
+		}
+
+		cycle++
+		if cycle == 40 {
+			cycle = 0
+			sprite += "\n"
+		}
+		xRegisterValue += buffer[j]
+	}
+	fmt.Print(sprite)
 }
 
 func myCustomSplit(s string, c string) []string {
