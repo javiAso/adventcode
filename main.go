@@ -9,7 +9,8 @@ import (
 	//day6 "adventcode/day6"
 	//day7 "adventcode/day7"
 	//day8 "adventcode/day8"
-	day10 "adventcode/day10"
+	//day10 "adventcode/day10"
+	day11 "adventcode/day11"
 )
 
 func main() {
@@ -35,5 +36,8 @@ func main() {
 	//day7.GetResult2()
 
 	//day10.GetResult1()
-	day10.GetResult2()
+	//day10.GetResult2()
+
+	day11.GetResult1()
+	//day11.GetResult2()
 }
