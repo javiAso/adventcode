@@ -1,13 +1,17 @@
 package day11
 
 import (
+	getInput "adventcode/getInputs"
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 )
 
 const URL = "https://adventofcode.com/2022/day/11/input"
 const SALTO = 10
+const COMA = 44
+const ESP = 32
 
 var monkeys = make([]Monkey, 0)
 var sample string = "Monkey 0:\n" +
@@ -43,29 +47,31 @@ func GetResult1() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	fmt.Println("El resultado del primer problema del dia 10 es: ", r)
+	fmt.Println("El resultado del primer problema del dia 11 es: ", r)
 }
 func problem1() (int, error) {
-	/* 	input, err := getInput.GetInput(URL)
-	   	if err != nil {
-	   		return -1, err
-	   	} */
+	input, err := getInput.GetInput(URL)
+	if err != nil {
+		return -1, err
+	}
 	s := ""
-
-	for i := 0; i < len(sample); i++ {
-		if sample[i] == SALTO {
+	for i := 0; i < len(input); i++ {
+		if input[i] == SALTO {
 			s += "\n"
-			if sample[i-1] == SALTO {
-				createMonkey(s)
+			if input[i-1] == SALTO {
+				monkeys = append(monkeys, createMonkey(s))
 				s = ""
 			}
 
 		} else {
-			s += string(sample[i])
+			s += string(input[i])
 		}
 	}
-	createMonkey(s)
-	return 0, nil
+	s += "\n"
+	monkeys = append(monkeys, createMonkey(s))
+	monkeysGetFun(monkeys)
+	//printMonkeys(monkeys)
+	return getMonkeyBusiness(monkeys), nil
 }
 
 func createMonkey(monkey string) Monkey {
@@ -74,11 +80,10 @@ func createMonkey(monkey string) Monkey {
 	s := ""
 	for i, j := 0, 0; i < len(monkey); i++ {
 		if monkey[i] == SALTO {
-			fmt.Print(s)
+			s = strings.TrimLeft(s, " ")
 			processSentence(j, s, &m)
 			s = ""
 			j++
-
 		} else {
 			s += string(monkey[i])
 		}
@@ -96,6 +101,19 @@ func processSentence(j int, sent string, m *Monkey) error {
 		}
 		m.Id = uint8(id)
 		return nil
+	case 1:
+		items := myCustomSplit(sent, ":")[1]
+		items = items[1:]
+		sliceItems, err := getItems(items)
+		if err != nil {
+			return err
+		}
+		m.Items = sliceItems
+		return nil
+	case 2:
+		op := myCustomSplit(sent, "=")[1]
+		m.Operation = op[1:]
+		return nil
 	case 3:
 		div, err := strconv.ParseInt(myCustomSplit(sent, " ")[3], 10, 64)
 		if err != nil {
@@ -103,8 +121,46 @@ func processSentence(j int, sent string, m *Monkey) error {
 		}
 		m.Test = int(div)
 		return nil
+	case 4:
+		t, err := strconv.ParseUint(myCustomSplit(sent, " ")[5], 10, 8)
+		if err != nil {
+			return err
+		}
+		m.True = uint8(t)
+		return nil
+	case 5:
+		f, err := strconv.ParseUint(myCustomSplit(sent, " ")[5], 10, 8)
+		if err != nil {
+			return err
+		}
+		m.False = uint8(f)
+		return nil
 	}
+
 	return nil
+}
+
+func getItems(items string) ([]int, error) {
+	a := make([]int, 0)
+	s := ""
+	for i := 0; i < len(items); i++ {
+		if items[i] == COMA {
+			item, err := strconv.ParseInt(s, 10, 64)
+			if err != nil {
+				return nil, err
+			}
+			a = append(a, int(item))
+			i++
+			s = ""
+		} else {
+			s += string(items[i])
+		}
+	}
+	item, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	return append(a, int(item)), nil
 }
 
 func myCustomSplit(s string, c string) []string {
